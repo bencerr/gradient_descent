@@ -7,11 +7,13 @@ height = @(x) init_intercept + (init_slope * x)
 
 residuals = [] % implment later
 
-ssr = @(intercept) (data.data(1,2) - (intercept + init_slope * data.data(1,1))).^2 ...
-                 + (data.data(2,2) - (intercept + init_slope * data.data(2,1))).^2 ...
-                 + (data.data(3,2) - (intercept + init_slope * data.data(3,1))).^2
+ssr = @(intercept) (data.data(1,1) - (intercept + init_slope * .5)).^2 ...
+                 + (data.data(2,1) - (intercept + init_slope * 1.91)).^2 ...
+                 + (data.data(3,1) - (intercept + init_slope * 3.2)).^2
              
-grad_ssr = @(x) ssr(x)'
+grad_ssr = @(intercept) -2*(data.data(1,1) - (intercept + init_slope * .5)) ...
+                      + -2*(data.data(2,1) - (intercept + init_slope * 1.91)) ...
+                      + -2*(data.data(3,1) - (intercept + init_slope * 3.2))
 
 iters = 100
 learning_rate = .01
@@ -21,6 +23,12 @@ next = init_slope
 step_size = grad_ssr(init_intercept) * learning_rate
 next_guess = init_intercept - step_size
 
+%for i=1:iters
+%    step_size = grad_ssr(next_guess) * learning_rate
+%    next_guess = next_guess - step_size;
+%    next_guess
+%end
+
 for i=1:iters
     step_size = grad_ssr(next_guess) * learning_rate
     next_guess = next_guess - step_size;
@@ -28,7 +36,7 @@ for i=1:iters
     next
 end
 
-fplot(grad_ssr)
+fplot(ssr)
 
 % f = @(x) (x(1));
 % gradf = @(x) (1)
@@ -55,9 +63,3 @@ fplot(grad_ssr)
 % hold on;
 % plot(5,-1, 'b^');
 % hold off;
-% for i=1:iters
-%    step_size = grad_ssr(next_guess) * learning_rate
-%    next_guess = next_guess - step_size;
-%    next_guess
-%    next
-%end

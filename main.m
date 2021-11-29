@@ -22,6 +22,8 @@ for i=1:iters
     next_guess = next_guess - step_size;
 end
 
+next_guess
+
 % f = @(x) (x(1));
 % gradf = @(x) (1)
 % 

@@ -11,11 +11,12 @@ ssr = @(intercept) data.data(1,1) - (intercept + data.data(1,2) * .5).^2 + data.
 grad_ssr = @(intercept) (-750*intercept+896)/125
 
 iters = 100
-learning_rate = .1
+learning_rate = .01
 next = init_slope
 
-next_guess = init_intercept;
-step_size = grad_ssr(next_guess) * learning_rate
+
+step_size = grad_ssr(init_intercept) * learning_rate
+next_guess = grad_ssr(init_intercept) - step_size
 
 for i=1:iters
     step_size = grad_ssr(next_guess) * learning_rate
